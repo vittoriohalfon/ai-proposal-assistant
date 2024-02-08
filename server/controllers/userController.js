@@ -9,15 +9,15 @@ const registerUser = async (req, res) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-    const { email, password } = req.body;
+    const { email, password, company_name } = req.body;
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Insert new user into DB
     try {
         const { rows } = await pool.query(
-            'INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email',
-            [email, hashedPassword]
+            'INSERT INTO users (email, password_hash, company_name) VALUES ($1, $2, $3) RETURNING id, email',
+            [email, hashedPassword, company_name]
         );
         res.status(201).json(rows[0]);
     } catch (error) {
@@ -33,7 +33,7 @@ const registerUser = async (req, res) => {
         const { rows } = await pool.query('SELECT * FROM users WHERE email = $1;', [email]);
         if (rows.length > 0) {
             const user = rows[0];
-            const isMatch = await bcrypt.compare(password, user.password);
+            const isMatch = await bcrypt.compare(password, user.password_hash);
             if (isMatch) {
                 //Generate JWT Token (SECRET_KEY in .env)
                 const token = jwt.sign({ id: user.id, email: user.email }, process.env.SECRET_KEY, { expiresIn: '1h' });
@@ -49,7 +49,7 @@ const registerUser = async (req, res) => {
     }
   };
   
-  // Export the functions
+  // Export functions
   module.exports = {
     registerUser,
     loginUser
