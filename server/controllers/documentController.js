@@ -1,3 +1,5 @@
+const { pool } = require('../config/dbConfig');
+
 // Logic to retrieve all docs
 const getAllDocuments = async (req, res) => {
     try {
@@ -25,7 +27,18 @@ const getAllDocuments = async (req, res) => {
   
   // Logic to create new doc
   const createDocument = async (req, res) => {
-    // Logica per creare un nuovo documento
+    const { documentName, userId } = req.body;
+    const documentPath = req.file.path;
+
+    try {
+        const { rows } = await pool.query(
+            'INSERT INTO documents (user_id, document_name, document_path) VALUES ($1, $2, $3) RETURNING *;',
+            [userId, documentName, documentPath]
+        );
+        res.status(201).json(rows[0]);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
   };
   
   const updateDocument = async (req, res) => {

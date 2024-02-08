@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
-const { pool } = require('./config/dbConfig');
 const userRoutes = require('./routes/userRoutes');
 const documentRoutes = require('./routes/documentRoutes');
 const upload = multer({ dest: 'uploads/' }); // Configura la cartella di destinazione degli upload
