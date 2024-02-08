@@ -3,6 +3,7 @@ const { validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+// Logic to register a new user
 const registerUser = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -12,6 +13,7 @@ const registerUser = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    // Insert new user into DB
     try {
         const { rows } = await pool.query(
             'INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email',
@@ -26,6 +28,7 @@ const registerUser = async (req, res) => {
   const loginUser = async (req, res) => {
     const { email, password } = req.body;
     
+    // Check if user exists
     try {
         const { rows } = await pool.query('SELECT * FROM users WHERE email = $1;', [email]);
         if (rows.length > 0) {
@@ -46,6 +49,7 @@ const registerUser = async (req, res) => {
     }
   };
   
+  // Export the functions
   module.exports = {
     registerUser,
     loginUser

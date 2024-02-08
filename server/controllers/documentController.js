@@ -30,6 +30,7 @@ const getAllDocuments = async (req, res) => {
     const { documentName, userId } = req.body;
     const documentPath = req.file.path;
 
+    // Insert new document into DB
     try {
         const { rows } = await pool.query(
             'INSERT INTO documents (user_id, document_name, document_path) VALUES ($1, $2, $3) RETURNING *;',
@@ -41,9 +42,12 @@ const getAllDocuments = async (req, res) => {
     }
   };
   
+  // Logic to update a document
   const updateDocument = async (req, res) => {
     const { id } = req.params;
     const { documentName } = req.body;
+    
+    // Update document in DB
     try {
         const { rows } = await pool.query(
             'UPDATE documents SET document_name = $1 WHERE id = $2 RETURNING *;',
@@ -55,8 +59,11 @@ const getAllDocuments = async (req, res) => {
     }
   };
   
+  // Logic to delete a document
   const deleteDocument = async (req, res) => {
     const { id } = req.params;
+    
+    // Delete document from DB
     try {
         await pool.query('DELETE FROM documents WHERE id = $1;', [id]);
         res.json({ message: 'Document deleted' });
@@ -65,6 +72,7 @@ const getAllDocuments = async (req, res) => {
     }
   };
   
+  // Export functions
   module.exports = {
     getAllDocuments,
     getDocumentById,
