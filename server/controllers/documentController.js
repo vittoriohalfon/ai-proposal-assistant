@@ -28,7 +28,7 @@ const getAllDocuments = async (req, res) => {
   // Logic to create new doc
   const createDocument = async (req, res) => {
     const documentName = req.body.documentName;
-    const userId = req.body.userId;
+    const userId = req.user.id;
     const documentPath = req.file.path;
 
     // Check if document name is provided
