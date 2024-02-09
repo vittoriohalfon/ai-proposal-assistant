@@ -27,8 +27,14 @@ const getAllDocuments = async (req, res) => {
   
   // Logic to create new doc
   const createDocument = async (req, res) => {
-    const { documentName, userId } = req.body;
+    const documentName = req.body.documentName;
+    const userId = req.body.userId;
     const documentPath = req.file.path;
+
+    // Check if document name is provided
+    if (!documentName) {
+        return res.status(400).json({ error: 'Document name is required' });
+    }
 
     // Insert new document into DB
     try {
