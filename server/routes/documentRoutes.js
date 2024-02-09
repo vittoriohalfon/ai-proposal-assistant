@@ -1,5 +1,6 @@
 const { body } = require('express-validator');
 const express = require('express');
+const multer = require('multer');
 const {
   getAllDocuments,
   getDocumentById,
@@ -9,6 +10,9 @@ const {
 } = require('../controllers/documentController');
 
 const router = express.Router();
+const upload = multer ({ dest: 'uploads/' });
+
+router.post('/upload', upload.single('document'), createDocument);
 
 router.post('/', [
     body('documentName').not().isEmpty().withMessage('Il nome del documento è richiesto'),

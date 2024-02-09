@@ -33,10 +33,10 @@ const getAllDocuments = async (req, res) => {
     // Insert new document into DB
     try {
         const { rows } = await pool.query(
-            'INSERT INTO documents (user_id, document_name, document_path) VALUES ($1, $2, $3) RETURNING *;',
+            'INSERT INTO documents (user_id, document_name, document_path) VALUES ($1, $2, $3) RETURNING id;',
             [userId, documentName, documentPath]
         );
-        res.status(201).json(rows[0]);
+        res.status(201).json({ message: "File uploaded successfully", documentId: rows[0].id, filePath: documentPath});
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

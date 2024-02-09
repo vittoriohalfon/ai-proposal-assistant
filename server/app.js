@@ -3,7 +3,6 @@ const cors = require('cors');
 const multer = require('multer');
 const userRoutes = require('./routes/userRoutes');
 const documentRoutes = require('./routes/documentRoutes');
-const upload = multer({ dest: 'uploads/' }); // Configura la cartella di destinazione degli upload
 require('dotenv').config();
 
 const app = express();
@@ -16,10 +15,6 @@ app.use(express.json()); // Middleware to analyse json request
 // Definizione routes,:
 app.use('/api/users', userRoutes);
 app.use('/api/documents', documentRoutes);
-
-app.post('/api/documents/upload', upload.single('document'), (req, res) => {
-    res.json({ message: 'File caricato con successo', filePath: req.file.path });
-});
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
