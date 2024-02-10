@@ -17,12 +17,13 @@ const getAllDocuments = async (req, res) => {
   const getDocumentById = async (req, res) => {
     const { id } = req.params; // Get document ID from URL
     const userId = req.user.id; // Get user ID from JWT token
+
     try {
-        const { rows } = await pool.query('SELECT * FROM documents WHERE id = $1', [id]);
+        const { rows } = await pool.query('SELECT * FROM documents WHERE id = $1 AND user_id = $2', [id, userId]);
         if (rows.length > 0) {
             res.json(rows[0]);
         } else {
-            res.status(404).json({ error: 'Document not found' });
+            res.status(404).json({ error: 'Document not found or access denied' });
         }
     } catch (error) {
         res.status(500).json({ error: error.message });
