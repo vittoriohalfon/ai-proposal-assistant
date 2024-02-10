@@ -25,3 +25,14 @@ CREATE TABLE document_metadata (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE public_contracts (
+    id SERIAL PRIMARY KEY,
+    ted_document_id VARCHAR(255) NOT NULL UNIQUE,
+    title TEXT NOT NULL,
+    publication_date DATE NOT NULL,
+    contract_type VARCHAR(255),
+    description TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
