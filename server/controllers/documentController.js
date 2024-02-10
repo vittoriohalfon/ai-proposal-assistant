@@ -2,8 +2,11 @@ const { pool } = require('../config/dbConfig');
 
 // Logic to retrieve all docs
 const getAllDocuments = async (req, res) => {
+
+    const userId = req.user.id;
+
     try {
-        const { rows } = await pool.query('SELECT * FROM documents');
+        const { rows } = await pool.query('SELECT * FROM documents WHERE user_id = $1', [userId]);
         res.json(rows);
     } catch (error) {
         res.status(500).json({ error: error.message });

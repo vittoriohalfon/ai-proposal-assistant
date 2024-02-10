@@ -19,7 +19,7 @@ router.post('/', [
     body('documentName').not().isEmpty().withMessage('Il nome del documento è richiesto'),
 ], createDocument);
 
-router.get('/', getAllDocuments);
+router.get('/', authenticateToken, getAllDocuments);
 router.get('/:id', getDocumentById);
 router.put('/:id', updateDocument);
 router.delete('/:id', deleteDocument);
