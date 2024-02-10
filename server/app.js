@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
 const documentRoutes = require('./routes/documentRoutes');
+const contractRoutes = require('./routes/contractRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json()); // Middleware to analyse json request
 // Definizione routes,:
 app.use('/api/users', userRoutes);
 app.use('/api/documents', documentRoutes);
+app.use('/api/contracts', contractRoutes);
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
