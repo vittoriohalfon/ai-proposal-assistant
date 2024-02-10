@@ -15,7 +15,8 @@ const getAllDocuments = async (req, res) => {
   
   // Logic to retrieve specific document by ID
   const getDocumentById = async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params; // Get document ID from URL
+    const userId = req.user.id; // Get user ID from JWT token
     try {
         const { rows } = await pool.query('SELECT * FROM documents WHERE id = $1', [id]);
         if (rows.length > 0) {

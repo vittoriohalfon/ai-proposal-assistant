@@ -20,7 +20,7 @@ router.post('/', [
 ], createDocument);
 
 router.get('/', authenticateToken, getAllDocuments);
-router.get('/:id', getDocumentById);
+router.get('/:id', authenticateToken, getDocumentById);
 router.put('/:id', updateDocument);
 router.delete('/:id', deleteDocument);
 
